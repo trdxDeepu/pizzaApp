@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 
@@ -6,13 +7,11 @@ import { pizzaData } from "./data";
 
 function App() {
   return (
-    <>
-      <div className="container ">
-        <Header />
-        <Menu />
-        <Footer />
-      </div>
-    </>
+    <div className="container ">
+      <Header />
+      <Menu />
+      <Footer />
+    </div>
   );
 }
 
@@ -25,19 +24,24 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  const numPizzas = pizzas.length;
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <ul className="pizzas">
-        {pizzaData.map((pizza) => (
-          <Pizza
-            key={pizza.name}
-            name={pizza.name}
-            photoName={pizza.photoName}
-            price={pizza.price}
-          />
-        ))}
-      </ul>
+      {numPizzas && (
+        <>
+          <p>
+            Authentic Italian cuisine.6 creative dishes to choose from.All from
+            our stone over, all organic and delicious.
+          </p>
+          <ul className="pizzas">
+            {pizzaData.map((pizza) => (
+              <Pizza key={pizza.name} pizzaObj={pizza} />
+            ))}
+          </ul>
+        </>
+      )}
     </main>
   );
 }
@@ -48,33 +52,43 @@ function Footer() {
   const closeHour = 22;
 
   const isOpen = hour >= openHour && hour <= closeHour;
-  console.log(isOpen);
 
-  // if (hour >= openHour && hour <= closeHour) {
-  //   alert("We're Currently Open ");
-  // } else {
-  //   alert("Sorry We're Clossed");
-  // }
-  console.log(hour);
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()}. We are currenlty Open
+      {isOpen ? (
+        <Order closeHour={closeHour} />
+      ) : (
+        <p>
+          We are happy to welcome you between {openHour}:00 and {closeHour}:00.
+        </p>
+      )}
     </footer>
   );
 }
 
+function Order({ closeHour }) {
+  return (
+    <footer className="footer">
+      <div className="order">
+        <p>We are Open until {closeHour}:00. Come visit us order online.</p>
+
+        <button className="btn">Order Now</button>
+      </div>
+    </footer>
+  );
+}
+
+// eslint-disable-next-line no-unused-vars
 function Test() {}
 
-function Pizza(props) {
-  console.log(props.photoName);
-  console.log(props.name);
+function Pizza({ pizzaObj }) {
   return (
     <li className="pizza">
-      <img src={props.photoName} alt={props.name} />
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
       <div>
-        <h3>{props.name}</h3>
-        <p>{props.ingrident}</p>
-        <span>{props.price + 4}</span>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingrident}</p>
+        <span>{pizzaObj.price + 4}</span>
       </div>
     </li>
   );
