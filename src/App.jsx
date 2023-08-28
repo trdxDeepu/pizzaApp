@@ -1,11 +1,13 @@
-import Funghi from "./pizzas/funghi.jpg";
+/* eslint-disable react/jsx-key */
+/* eslint-disable react/prop-types */
+
 import React from "react";
+import { pizzaData } from "./data";
 
 function App() {
   return (
     <>
-      <div>
-        <h1>Hello React</h1>
+      <div className="container ">
         <Header />
         <Menu />
         <Footer />
@@ -15,17 +17,28 @@ function App() {
 }
 
 function Header() {
-  return <h1>Fast React Pizza Co</h1>;
+  return (
+    <header className="header">
+      <h1>Fast React Pizza Co</h1>
+    </header>
+  );
 }
 
 function Menu() {
   return (
-    <div>
+    <main className="menu">
       <h2>Our Menu</h2>
-      <Pizza />
-      <Pizza />
-      <Pizza />
-    </div>
+      <ul className="pizzas">
+        {pizzaData.map((pizza) => (
+          <Pizza
+            key={pizza.name}
+            name={pizza.name}
+            photoName={pizza.photoName}
+            price={pizza.price}
+          />
+        ))}
+      </ul>
+    </main>
   );
 }
 
@@ -34,8 +47,8 @@ function Footer() {
   const openHour = 9;
   const closeHour = 22;
 
-  const isOpen = hour>=openHour && hour <=closeHour;
-  console.log(isOpen)
+  const isOpen = hour >= openHour && hour <= closeHour;
+  console.log(isOpen);
 
   // if (hour >= openHour && hour <= closeHour) {
   //   alert("We're Currently Open ");
@@ -44,18 +57,26 @@ function Footer() {
   // }
   console.log(hour);
   return (
-    <footer>{new Date().toLocaleTimeString()}. We are currenlty Open</footer>
-  ); 
+    <footer className="footer">
+      {new Date().toLocaleTimeString()}. We are currenlty Open
+    </footer>
+  );
 }
 
-const Test = () => {};
+function Test() {}
 
-function Pizza() {
+function Pizza(props) {
+  console.log(props.photoName);
+  console.log(props.name);
   return (
-    <>
-      <img src={Funghi} alt="Funghi" />
-      <p>Funghi Pizza</p>
-    </>
+    <li className="pizza">
+      <img src={props.photoName} alt={props.name} />
+      <div>
+        <h3>{props.name}</h3>
+        <p>{props.ingrident}</p>
+        <span>{props.price + 4}</span>
+      </div>
+    </li>
   );
 }
 
